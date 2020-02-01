@@ -1,0 +1,61 @@
+================================
+Network Threat Hunting Run book
+================================
+1. Identify Communication channels 
+2. Indentify the internal host 
+3. Analyze the protocol 
+4. Scritinize the reputation of the destination 
+5. Disposition 
+
+================================
+*Step 1  :: ID persistent connections*
+
+1 Continuous Connection 
+> ```rita show-long-connections dnscat2 | head -10```
+2 Beacon 
+ > Look for reapeated cycles in timing and data size.
+ > ```rita show-beacon beacon | head -10``` 
+3 Strobe 
+================================
+*Step 2 :: Recon on internal system*
+
+1. OS platforms 
+> Is endpoint security is installed?
+> Are logs are collected?
+2. Device functions
+> Some IoT devices "call home" as a "feature"
+3. Baseline compare?
+> Do all endpoints behaves in same way or its an uniqe behaviour
+
+================================
+*Step 3 :: Protocol analysis*
+
+1. Is this protocol suppose to have a persistance connection?
+2. Do the protocol is carrying traffic in same way it should carry?
+> ```Bro/Zeek```
+3. Validate integrity of protocol.
+> Look for user agent 
+> Look for an unique requests for User agents 
+> ```bro/zeek + 'uniq -c'```
+4. DNS C2 techniques 
+> Look for number of FQDN
+> Domains keys
+5. Check the behaviour of the protocol
+
+================================
+*Step 4 :: Valiate reputation of target*
+
+1. Do you recongnize the domain
+2. Geo locations 
+3. How old are the domains
+> Domains < 7 days are suspicious
+4.Is Destination on any known blacklist ?
+> https://www.abuseipdb.com
+> https://apility.io
+> ```dig <IP>```
+
+================================
+*Conclusion* 
+
+1. A succesful hunt will be on conclusion of 1 or 0 
+2. If you have any doubts note that points and look in next hunt
